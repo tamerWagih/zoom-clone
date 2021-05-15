@@ -37,8 +37,12 @@ navigator.mediaDevices
         text.val('');
       }
     });
-    socket.on('createMessage', (message) => {
-      $('ul').append(`<li class="message"><b>user</b><br/>${message}</li>`);
+    socket.on('createMessage', (message, userId) => {
+      $('ul').append(
+        `<li class="message"><b>${
+          'User-' + userId.substring(0, 5)
+        }</b><br/>${message}</li>`
+      );
       scrollToBottom();
     });
   });
@@ -75,8 +79,8 @@ function addVideoStream(video, stream) {
 }
 
 const scrollToBottom = () => {
-  var d = $('.main__chat_window');
-  d.scrollTop(d.prop('scrollHeight'));
+  var chatWindow = $('.main__chat_window');
+  chatWindow.scrollTop(chatWindow.prop('scrollHeight'));
 };
 
 const muteUnmute = () => {
@@ -91,7 +95,6 @@ const muteUnmute = () => {
 };
 
 const playStop = () => {
-  console.log('object');
   let enabled = myVideoStream.getVideoTracks()[0].enabled;
   if (enabled) {
     myVideoStream.getVideoTracks()[0].enabled = false;
